@@ -7,23 +7,12 @@
             <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
             <script src="/js/bower_components/angular/angular.js"></script>
             <script src="Controllers/script.js"></script>
+            <script type="text/javascript"src="https://maps.googleapis.com/maps/api/js"></script>
 			 <style type="text/css">
       		html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
     		</style>
-    		<script type="text/javascript"
-      			src="https://maps.googleapis.com/maps/api/js">
-    		</script>
-		    <script type="text/javascript">
-              function initialize() {
-                var mapOptions = {
-                  center: { lat: -34.397, lng: 150.644},
-                  zoom: 8
-                };
-                var map = new google.maps.Map(document.getElementById('map-canvas'),
-                    mapOptions);
-              }
-              google.maps.event.addDomListener(window, 'load', initialize);
-    		</script>
+
+
 		</head>
 		<body ng-app="findaHomeApp">
 
@@ -31,9 +20,56 @@
 
             <div ng-controller="mainController">
                 {{someWord}}
-                        <div id="map-canvas"></div>
-            </div>
 
+
+            </div>
+                        <div id="map-canvas">
+        <script type="text/javascript">
+              function initialize() {
+                var mapOptions = {
+        zIndex: -1,
+        center : new google.maps.LatLng(-41, 172),
+        zoom : 7,
+        mapTypeId : google.maps.MapTypeId.ROADMAP,//TERRAIN, //ROADMAP SATELLITE
+        panControl : false,
+        streetViewControl : false,
+        scaleControl : true,
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+        },
+        disableDoubleClickZoom : true,
+        zoomControlOptions : {
+            style : google.maps.ZoomControlStyle.DEFAULT,
+            position : google.maps.ControlPosition.RIGHT_CENTER
+        }
+                };
+    var map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+
+
+         var strictBounds = new google.maps.LatLngBounds(
+     new google.maps.LatLng(-52.618591, 165.883804),
+     new google.maps.LatLng(-29.209970, -175.987198) 
+    
+   );
+    var boundingBoxPoints = [
+      strictBounds.getNorthEast(), new google.maps.LatLng(strictBounds.getNorthEast().lat(), strictBounds.getSouthWest().lng()),
+      strictBounds.getSouthWest(), new google.maps.LatLng(strictBounds.getSouthWest().lat(), strictBounds.getNorthEast().lng()), strictBounds.getNorthEast()
+   ];
+     var drawBounds= new google.maps.Polyline({
+      path: boundingBoxPoints,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+     // map: map
+   });
+     drawBounds.setMap(map);
+              }
+              
+
+              google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
+                        </div>
 
 
 		</body>
