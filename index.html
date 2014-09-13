@@ -31,6 +31,11 @@
 
             <div ng-controller="mainController">
                 {{homes.length}}
+                <select
+                        ng-model="homes"
+                        ng-options="home.RateableValue for  home in homes">
+                    <option>--</option>
+                </select>
                         <div id="map-canvas"></div>
             </div>
 

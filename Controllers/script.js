@@ -13,7 +13,6 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
         error(function (data, status, headers, config) {
             alert("Something done not right and stuff");
         });
-
     function getAllPages(dataArray) {
         console.log("In get all")
         var allData = new Array();
@@ -22,22 +21,26 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
             var promise = $http({method: 'GET', url: 'https://api.trademe.co.nz/v1/Search/Property/Residential.json?category=3399&page=' + +i + '&rows=500&region=15&return_metadata=true&' + auth});
             promise.then(function (data) {
                 for (var i = 0; i < data.data.List.length; i++) {
-                    if(data.data.List[i].RateableValue != undefined){
+                    if (data.data.List[i].RateableValue != undefined) {
                         allData.push(data.data.List[i])
                     }
 
                 }
+                allData.sort(priceSort);
+            }, function (error) {
+                alert("Oh bollocks that didnt work right cuzzz" + error);
             });
         }
         return allData;
     }
 });
-//function priceSort(a , b){
-//    if(){
-//
-//    }
-//    else if (){
-//
-//    }
-//    return 0;
-//}
+function priceSort(a, b) {
+    console.log("sorting fings");
+    if (a.RateableValue < b.RateableValue) {
+        return -1;
+    }
+    else if (a.RateableValue > b.RateableValue) {
+        return 1;
+    }
+    return 0;
+}
