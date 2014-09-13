@@ -1,0 +1,9 @@
+           promise.then(function (data) {
+                for (var i = 0; i < data.data.List.length; i++) {
+                    if (data.data.List[i].RateableValue != undefined && data.data.List[i].RateableValue > 100000 ) {
+                        allData.push(data.data.List[i])
+                    }
+                }
+            }, function (error) {
+                alert("Oh bollocks that didnt work right cuzzz" + error);
+            });
