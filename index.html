@@ -27,6 +27,27 @@
 		</head>
 		<body ng-app="findaHomeApp">
 
+            <nav>
+                <select>
+                  <option>Auckland</option>
+                  <option>Christchurch</option>
+                  <option>Wellington</option>
+                </select>
+
+                <input type="radio" id="heatmap" name="radios" value="heatmap" checked>
+                  <label for="heatmap">Heatmap</label>
+
+                <input type="radio" id="markers" name="radios" value="markers">
+                  <label for="markers">Markers</label>
+
+                <input type="radio" id="both" name="radios" value="both">
+                  <label for="both">Heatmap and Markers</label>
+
+                <p>Show:</p>
+
+                <img src="images/logo3-colour.png" />
+            </nav>
+
             <div id="sidebar-info">
               
               <h1>Address</h1>
