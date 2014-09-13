@@ -12,22 +12,51 @@
 			 <style type="text/css">
       		html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
     		</style>
-
-
 		</head>
 		<body ng-app="findaHomeApp">
 
+            <nav>
+                <select>
+                  <option>Auckland</option>
+                  <option>Christchurch</option>
+                  <option>Wellington</option>
+                </select>
 
+                <input type="radio" id="heatmap" name="radios" value="heatmap" checked>
+                  <label for="heatmap">Heatmap</label>
 
-            <div ng-controller="mainController">
-                {{someWord}}
+                <input type="radio" id="markers" name="radios" value="markers">
+                  <label for="markers">Markers</label>
 
+                <input type="radio" id="both" name="radios" value="both">
+                  <label for="both">Heatmap and Markers</label>
 
+                <p>Show:</p>
+
+                <img src="images/logo3-colour.png" />
+            </nav>
+
+            <div id="sidebar-info">
+              
+              <h1>Address</h1>
+              <img src="" />
+              <p>Rooms: 2</p>
+              <p>Bathrooms: 3</p>
+              <h3>Description:</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+              <h3>Price: $500,000</h3>
             </div>
                         <div id="map-canvas">
 
 
                         </div>
+
+
 
 
 		</body>
