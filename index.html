@@ -21,8 +21,27 @@
                 };
                 var map = new google.maps.Map(document.getElementById('map-canvas'),
                     mapOptions);
+
+                for (var i = 0; i < homes.length; i++) {
+                  var pointArray = new google.maps.MVCArray(homes[i]);
+
+                  var heatmap = new google.maps.visualization.HeatmapLayer({
+                    pointArray:
+                  });
+
+                  heatmap.set('gradient', getColour(i, homes.length);
+                  heatmap.setMap(map);
+                };
               }
               google.maps.event.addDomListener(window, 'load', initialize);
+
+              function(var index, var length){
+                if(index < length/2)
+                  return ['rgba(255, ' + 255*index / length +', 0, 1)'];
+                else
+                  return [rgba( + 255*index / length +', 255, 1)'];
+              }
+
     		</script>
 		</head>
 		<body ng-app="findaHomeApp">
