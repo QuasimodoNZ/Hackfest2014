@@ -1,0 +1,22 @@
+body {
+	font-family: arial;
+}
+
+#sidebar-info {
+	max-width: 250px;
+	min-height: 100%;
+	float: right;
+	border-left: 3px solid #3399FF;
+	padding: 10px;
+	border-radius: 5px 0 0 5px;
+	box-shadow: 0 0 15px #C6C6A9;
+}
+
+#sidebar-info h1, #sidebar-info img {
+	border-bottom: 1px solid #C6C6A9;
+	margin-top: 0;
+}
+
+#sidebar-info img {
+	max-width: 200px;
+}
