@@ -23,6 +23,7 @@ nav select {
 	border-radius: 5px;
 	background-color: #66665A;
 	color: #fff;
+	-webkit-appearance:none;
 }
 
 nav input {
