@@ -9,42 +9,51 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
     $http({method: 'GET', url: 'https://api.trademe.co.nz/v1/Search/Property/Residential.json?category=3399&page=1&rows=500&region=15&return_metadata=true&' + auth}).
         success(function (data, status, headers, config) {
             $scope.homes = getAllPages(data);
-            debugger;
-            $scope.homeList = makeList($scope.homes);
-
         }).
         error(function (data, status, headers, config) {
             alert("Something done not right and stuff");
         });
 
 
+//    function getAllPages(dataArray) {
+//        console.log("In get all")
+//        var allData = new Array();
+//        var totPages = Math.round(dataArray.TotalCount / 500);
+//        for (var i = 1; i <= totPages; i++) {
+//            $http({method: 'GET', url: 'https://api.trademe.co.nz/v1/Search/Property/Residential.json?category=3399&page=' + +i + '&rows=500&region=15&return_metadata=true&' + auth}).
+//                success(function (data, status, headers, config) {
+//                    console.log("IN success");
+//                    console.log(data.length);
+////                    for(var i =0; i < data.length; i++){
+//                        console.log(data[i]);
+//                        allData.push(data[i]);
+////                    }
+//
+//                }).
+//                error(function (data, status, headers, config) {
+//                    alert("Something done not right and stuff");
+//                });
+//
+//        }
+//        return allData;
+//    }
 
     function getAllPages(dataArray) {
+        console.log("In get all")
         var allData = new Array();
         var totPages = Math.round(dataArray.TotalCount / 500);
         for (var i = 1; i <= totPages; i++) {
-            $http({method: 'GET', url: 'https://api.trademe.co.nz/v1/Search/Property/Residential.json?category=3399&page=' + +i + '&rows=500&region=15&return_metadata=true&' + auth}).
-                success(function (data, status, headers, config) {
-                    allData.push(data);
-                }).
-                error(function (data, status, headers, config) {
-                    alert("Something done not right and stuff");
-                });
+            var promise = $http({method: 'GET', url: 'https://api.trademe.co.nz/v1/Search/Property/Residential.json?category=3399&page=' + +i + '&rows=500&region=15&return_metadata=true&' + auth});
+            promise.then(function (data) {
+                for (var i = 0; i < data.data.List.length; i++) {
+                    if(data.data.List[i].RateableValue != undefined){
+                        allData.push(data.data.List[i])
+                    }
+
+                }
+            });
         }
         return allData;
-    }
-
-    function makeList(dataArr) {
-        var dataList = new Array();
-        for (var i = 0; i < dataArr.length; i++) {
-            for (var j = 0; j < dataArr[0].length; j++) {
-                if (true) {
-
-                    dataList.push(dataArr[i][j]);
-                }
-            }
-        }
-        return dataList;
     }
 });
 //function priceSort(a , b){
