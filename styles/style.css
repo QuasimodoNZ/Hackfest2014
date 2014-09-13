@@ -4,12 +4,12 @@ body {
 
 nav {
 	background-color: #66665A;
-	height: 70px;
+	height: 60px;
 	border-bottom: 1px solid #3399FF;
 }
 
 nav img {
-	height: 60px;
+	height: 50px;
 	padding: 5px 10px;
 	display: inline-block;
 	border-right: 1px solid #3399FF;
@@ -17,7 +17,7 @@ nav img {
 }
 
 nav select {
-	margin: 20px 40px 0 40px;
+	margin: 15px 40px 0 40px;
 	padding: 5px;
 	border: 1px solid #3399FF;
 	border-radius: 5px;
@@ -31,13 +31,13 @@ nav input {
 
 nav p {
 	float: right;
-	margin: 25px 15px 0 0;
+	margin: 20px 15px 0 0;
 	color: #fff;
 }
 
 label {
 	float: right;
-	margin: 20px 20px 0 0;
+	margin: 15px 20px 0 0;
 	padding: 5px;
 	border: 1px solid #3399FF;
 	border-radius: 5px;
@@ -51,7 +51,8 @@ input:checked + label {
 
 #sidebar-info {
 	max-width: 250px;
-	min-height: 100%;
+	max-height: 600px;
+	overflow: scroll;
 	float: right;
 	border-left: 3px solid #3399FF;
 	padding: 10px;
