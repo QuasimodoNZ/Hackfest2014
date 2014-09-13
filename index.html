@@ -25,65 +25,73 @@
             </div>
                         <div id="map-canvas">
         <script type="text/javascript">
-              function initialize() {
+        function initialize() {
                 var mapOptions = {
-        zIndex: -1,
-        center : new google.maps.LatLng(-41, 172),
-        zoom : 7,
-        mapTypeId : google.maps.MapTypeId.ROADMAP,//TERRAIN, //ROADMAP SATELLITE
-        panControl : false,
-        streetViewControl : false,
-        scaleControl : true,
-        mapTypeControlOptions: {
-            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-        },
-        disableDoubleClickZoom : true,
-        zoomControlOptions : {
-            style : google.maps.ZoomControlStyle.DEFAULT,
-            position : google.maps.ControlPosition.RIGHT_CENTER
-        }
+                    zIndex: -1,
+                    center : new google.maps.LatLng(-41, 172),
+                    zoom : 6,
+                    mapTypeId : google.maps.MapTypeId.ROADMAP,//TERRAIN, //ROADMAP SATELLITE
+                    panControl : false,
+                    streetViewControl : false,
+                    scaleControl : true,
+                    mapTypeControlOptions: {
+                        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+                    },
+                    disableDoubleClickZoom : true,
+                    zoomControlOptions : {
+                        style : google.maps.ZoomControlStyle.DEFAULT,
+                        position : google.maps.ControlPosition.RIGHT_CENTER
+                    }
                 };
-    var map = new google.maps.Map(document.getElementById('map-canvas'),
+                var map = new google.maps.Map(document.getElementById('map-canvas'),
                     mapOptions);
 
 
-         var strictBounds = new google.maps.LatLngBounds(
-     new google.maps.LatLng(-52.618591, 165.883804),
-     new google.maps.LatLng(-29.209970, -175.987198) 
-    
-   );
-    var boundingBoxPoints = [
-      strictBounds.getNorthEast(), new google.maps.LatLng(strictBounds.getNorthEast().lat(), strictBounds.getSouthWest().lng()),
-      strictBounds.getSouthWest(), new google.maps.LatLng(strictBounds.getSouthWest().lat(), strictBounds.getNorthEast().lng()), strictBounds.getNorthEast()
-   ];
-     var drawBounds= new google.maps.Polyline({
-      path: boundingBoxPoints,
-      strokeColor: '#FF0000',
-      strokeOpacity: 1.0,
-      strokeWeight: 2,
-     // map: map
-   });
-     drawBounds.setMap(map);
-     var mapCenter = new google.maps.LatLng(-41,172)
+                var strictBounds = new google.maps.LatLngBounds(
+                     new google.maps.LatLng(-52.618591, 165.883804),
+                     new google.maps.LatLng(-29.209970, -175.987198)                    
+                );
+                var boundingBoxPoints = [
+                    strictBounds.getNorthEast(), new google.maps.LatLng(strictBounds.getNorthEast().lat(), strictBounds.getSouthWest().lng()),
+                    strictBounds.getSouthWest(), new google.maps.LatLng(strictBounds.getSouthWest().lat(), strictBounds.getNorthEast().lng()), strictBounds.getNorthEast()
+                ];
+                var drawBounds= new google.maps.Polyline({
+                    path: boundingBoxPoints,
+                    strokeColor: '#F0F0F0',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 0.5,
+                      // map: map
+                });
+                drawBounds.setMap(map);
+                //map.fitBounds(strictBounds);
+                var mapCenter = new google.maps.LatLng(-41,172)
 
-        google.maps.event.addListener(map, 'dragend', function() {
-     if (strictBounds.contains(map.getCenter())) return;
-     // We're out of bounds - Move the map back within the bounds
-     var c = map.getCenter(),
-         x = c.lng(),
-         y = c.lat(),
-         maxX = strictBounds.getNorthEast().lng(),
-         maxY = strictBounds.getNorthEast().lat(),
-         minX = strictBounds.getSouthWest().lng(),
-         minY = strictBounds.getSouthWest().lat();
+                google.maps.event.addListener(map, 'dragend', function() {
 
-     if (x < minX) x = minX;
-     if (x > maxX) x = maxX;
-     if (y < minY) y = minY;
-     if (y > maxY) y = maxY;
+                
+                 // We're out of bounds - Move the map back within the bounds
 
-     map.setCenter(mapCenter);
-   });
+                var c = map.getCenter(),
+                   x = c.lng(),
+                   y = c.lat(),
+                   maxX = strictBounds.getNorthEast().lng(),
+                   maxY = strictBounds.getNorthEast().lat(),
+                   minX = strictBounds.getSouthWest().lng(),
+                   minY = strictBounds.getSouthWest().lat();
+                 
+                   console.log("max x");
+                   console.log(maxX);
+                   console.log("min x");
+                   console.log(minX);
+                   if (x < minX) x = minX;
+                   if (x > maxX) x = maxX;
+
+                   if (y < minY) y = minY;
+                   if (y > maxY) y = maxY;
+
+                   map.setCenter(mapCenter);
+                   if (strictBounds.contains(map.getCenter())) return;
+                });
               }
               
 
