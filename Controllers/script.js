@@ -14,30 +14,6 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
             alert("Something done not right and stuff");
         });
 
-
-//    function getAllPages(dataArray) {
-//        console.log("In get all")
-//        var allData = new Array();
-//        var totPages = Math.round(dataArray.TotalCount / 500);
-//        for (var i = 1; i <= totPages; i++) {
-//            $http({method: 'GET', url: 'https://api.trademe.co.nz/v1/Search/Property/Residential.json?category=3399&page=' + +i + '&rows=500&region=15&return_metadata=true&' + auth}).
-//                success(function (data, status, headers, config) {
-//                    console.log("IN success");
-//                    console.log(data.length);
-////                    for(var i =0; i < data.length; i++){
-//                        console.log(data[i]);
-//                        allData.push(data[i]);
-////                    }
-//
-//                }).
-//                error(function (data, status, headers, config) {
-//                    alert("Something done not right and stuff");
-//                });
-//
-//        }
-//        return allData;
-//    }
-
     function getAllPages(dataArray) {
         console.log("In get all")
         var allData = new Array();
