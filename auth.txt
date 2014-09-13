@@ -1,0 +1,9 @@
+Authorization: OAuth oauth_consumer_key="<consumer-key>", oauth_token="<token>", oauth_signature_method="PLAINTEXT", oauth_signature="<consumer-secret>&<token-secret>"
+
+CONKEY: 5815646823D13FA7222C0797A2749E60
+
+CONSEC : 8A6E9A02BD6316ACA7CB3F2D57C28609
+
+AUTHTOKEN : DA88138F569C33AD938CA41753487034
+
+AUTHTOKSEC : F0676D085E1F584D5992FBE42D6546A3
