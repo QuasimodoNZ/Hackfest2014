@@ -68,11 +68,7 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
 });
 function priceSort(a, b) {
     console.log("sorting fings");
-    if (a.RateableValue < b.RateableValue) {
-        return -1;
-    }
-    else if (a.RateableValue > b.RateableValue) {
-        return 1;
-    }
-    return 0;
+    return a.RateableValue - b.RateableValue;
+
 }
+//module.exports = {priceSort: priceSort };
