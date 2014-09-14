@@ -20,12 +20,13 @@
                     mapOptions);
                   // [START snippet-load]
   // Load GeoJSON.
-  map.data.loadGeoJson('wellington.geojson');
+ var geojson = map.data.loadGeoJson('wellington.geojson');
   // [END snippet-load]
 
   // [START snippet-style]
   // Set the stroke width, and fill color for each polygon
   var featureStyle = {
+
     fillColor: 'green',
     strokeWeight: 1.5,
     strokeColor: 'black',
@@ -77,7 +78,7 @@
                    if (y > maxY) y = maxY;
 
                    map.setCenter(mapCenter);
-                   if (strictBounds.contains(map.getCenter())) return;
+                  // if (strictBounds.contains(map.getCenter())) return;
                 });
               }
               
