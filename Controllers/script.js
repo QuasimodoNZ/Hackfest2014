@@ -3,6 +3,7 @@
  */
 var findaHomeApp = angular.module('findaHomeApp', []);
 var bands = 5;
+var map;
 var auth = 'oauth_consumer_key=5815646823D13FA7222C0797A2749E60&oauth_token=DA88138F569C33AD938CA41753487034&oauth_signature_method=PLAINTEXT&oauth_signature=8A6E9A02BD6316ACA7CB3F2D57C28609%26F0676D085E1F584D5992FBE42D6546A3';
 findaHomeApp.controller('mainController', function ($scope, $http, $q) {
 
@@ -12,8 +13,20 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
             center: { lat: -34.397, lng: 150.644},
             zoom: 8
         };
-        var map = new google.maps.Map(document.getElementById('map-canvas'),
+        map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
+    }
+
+    function addMarkers() {
+        debugger;
+//
+//        for(var i=0; i< 20; i++){
+//            if($scope.housesList[i].Geographics){
+//                var location = new google.maps.LatLng($scope.housesList.GeographicLocation.Latitude, $scope.housesList.GeographicLocation.Longitude);
+//            }
+//
+//
+//        }
     }
 
     //google.maps.event.addDomListener(window, 'load', initialize);
@@ -24,8 +37,8 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
             //debugger;
             var homes = [];
 
-            for(var j = 0; j < homeBands[i].length; j++){
-                if(!homeBands[i][j].hasOwnProperty('GeographicLocation'))
+            for (var j = 0; j < homeBands[i].length; j++) {
+                if (!homeBands[i][j].hasOwnProperty('GeographicLocation'))
                     continue;
 
                 var lng = homeBands[i][j].GeographicLocation.Longitude;
@@ -35,7 +48,7 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
             }
 
             var pointArray = new google.maps.MVCArray(homes);
-            if(pointArray.length==0)
+            if (pointArray.length == 0)
                 continue;
 
             var heatmap = new google.maps.visualization.HeatmapLayer({
@@ -63,8 +76,12 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
                 var houseList = spitToList(things);
                 console.log(houseList);
                 houseList.sort(priceSort);
+                $scope.housesList = splitToBand(houseList);
+//                debugger;
+                $scope.selectedHouse = $scope.housesList[1][200];
                 var housesByBand = splitToBand(houseList);
-                applyHeatmap(housesByBand);
+//                applyHeatmap(housesByBand);
+                addMarkers();
             });
 
         }).
@@ -97,16 +114,15 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
 
     function splitToBand(col) {
         var allBandsArr = new Array();
-        var inc = col.length /bands;
-        var num  =  inc;
-        var idx =0;
-        for(var i =0; i < bands ; i++){
+        var inc = col.length / bands;
+        var num = inc;
+        var idx = 0;
+        for (var i = 0; i < bands; i++) {
             var band = col.slice(idx, num);
             idx = num;
-            num +=inc;
+            num += inc;
             allBandsArr.push(band);
         }
-        debugger;
         return allBandsArr;
     }
 
