@@ -18,12 +18,17 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
     //google.maps.event.addDomListener(window, 'load', initialize);
     setUpMap();
     function applyHeatmap(homes) {
-        debugger;
         // Where homes is an array of of arrays of google.maps.LatLng(float, float)
         for (var i = 0; i < homes.length; i++) {
-          var pointArray = new google.maps.MVCArray(homes[i]);
 
-          heatmap = new google.maps.visualization.HeatmapLayer({
+            var individualProperties = homes[i][0];
+            debugger;
+
+          var pointArray = new google.maps.MVCArray(homes[i]);
+          if(pointArray.length==0)
+            continue;
+
+          var heatmap = new google.maps.visualization.HeatmapLayer({
             data: pointArray
           });
 
