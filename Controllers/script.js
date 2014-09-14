@@ -12,30 +12,43 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
           center: { lat: -34.397, lng: 150.644},
           zoom: 8
         };
-        var map = new google.maps.Map(document.getElementById('map-canvas'),
+        $scope.map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
     }
     //google.maps.event.addDomListener(window, 'load', initialize);
     setUpMap();
-    function applyHeatmap(homes) {
-        // Where homes is an array of of arrays of google.maps.LatLng(float, float)
-        for (var i = 0; i < homes.length; i++) {
+    function applyHeatmap(homeBands) {
+        // Where homeBands is an array of of arrays of google.maps.LatLng(float, float)
+        for (var i = 0; i < homeBands.length; i++) {
+            //debugger;
+            var homes = [];
 
-            var individualProperties = homes[i][0];
-            debugger;
+            for(var j = 0; j < homeBands[i][0].length; j++){
+                // console.log(i+ ' ' + j);
 
-          var pointArray = new google.maps.MVCArray(homes[i]);
-          if(pointArray.length==0)
-            continue;
+                // if(j==1121)
+                //     debugger;
+                if(!homeBands[i][0][j].hasOwnProperty('GeographicLocation'))
+                    continue;
 
-          var heatmap = new google.maps.visualization.HeatmapLayer({
-            data: pointArray
-          });
+                var lng = homeBands[i][0][j].GeographicLocation.Longitude;
+                var lat = homeBands[i][0][j].GeographicLocation.Latitude;
 
-          heatmap.set('gradient', getColour(i, homes.length));
-          heatmap.setMap(map);
-        };
-      }
+                homes.push(new google.maps.LatLng(lat, lng));
+            }
+
+            var pointArray = new google.maps.MVCArray(homes);
+            if(pointArray.length==0)
+                continue;
+
+            var heatmap = new google.maps.visualization.HeatmapLayer({
+                data: pointArray
+            });
+
+            heatmap.set('gradient', getColour(i, homeBands.length));
+            heatmap.setMap($scope.map);
+        }
+    }
 
       function getColour(index, length){
         if(index < length/2){
@@ -54,6 +67,7 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
                 console.log(houseList);
                 houseList.sort(priceSort);
                 var housesByBand = splitToBand(houseList);
+                setUpMap();
                 applyHeatmap(housesByBand);
             });
 
