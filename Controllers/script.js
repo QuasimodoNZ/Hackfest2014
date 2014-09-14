@@ -7,31 +7,66 @@ var auth = 'oauth_consumer_key=5815646823D13FA7222C0797A2749E60&oauth_token=DA88
 findaHomeApp.controller('mainController', function ($scope, $http, $q) {
 var map;
     function setUpMap() {
+        return;
         console.log("Setting up map");
         var mapOptions = {
-            center: { lat: -34.397, lng: 150.644},
-            zoom: 8
+            center: { lat: -42, lng: 174},
+            zoom: 6
         };
         var map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
         console.log(map);
         console.log(document.getElementById('map-canvas'));
+
+        var taxiData = [
+          new google.maps.LatLng(36.782551, -122.445368),
+          new google.maps.LatLng(36.782745, -122.444586),
+          new google.maps.LatLng(36.782842, -122.443688),
+          new google.maps.LatLng(36.782919, -122.442815)];
+          var pointArray = new google.maps.MVCArray(taxiData);
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: pointArray
+          });  heatmap.setMap(map);
     }
 
     //google.maps.event.addDomListener(window, 'load', initialize);
     setUpMap();
     function applyHeatmap(homeBands) {
-        map = document.getElementById('map-canvas');
-        if(!map)
-            map = new google.maps.Map(document.getElementById('map-canvas'),
+        console.log("Setting up map");
+        var mapOptions = {
+            center: { lat: -42, lng: 174},
+            zoom: 6
+        };
+        var map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
 
-        console.log("Applying heatmap");
+        //Uncomment the following for sample data (in san fransisco)
+        var taxiData = [];
+          // new google.maps.LatLng(37.782551, -122.445368),
+          // new google.maps.LatLng(37.782745, -122.444586),
+          // new google.maps.LatLng(37.782842, -122.443688),
+          // new google.maps.LatLng(37.782919, -122.442815)];
+
+//         for (var i = 0; i < homeBands.length; i++) 
+// for(var j = 0; j < homeBands[i].length; j++){
+//                 if(!homeBands[i][j].hasOwnProperty('GeographicLocation'))
+//                     continue;
+
+//                 var lng = homeBands[i][j].GeographicLocation.Longitude;
+//                 var lat = homeBands[i][j].GeographicLocation.Latitude;
+
+//                 taxiData.push(new google.maps.LatLng(lat, lng));
+//             }/////////////
+
+          // var pointArray = new google.maps.MVCArray(taxiData);
+        // heatmap = new google.maps.visualization.HeatmapLayer({
+        //     data: pointArray
+        //   });  heatmap.setMap(map);
+
         // Where homeBands is an array of of arrays of google.maps.LatLng(float, float)
         for (var i = 0; i < homeBands.length; i++) {
             var homes = [];
 
-            console.log("Making pointArray for the "+i+"th band");
             for(var j = 0; j < homeBands[i].length; j++){
                 if(!homeBands[i][j].hasOwnProperty('GeographicLocation'))
                     continue;
@@ -42,38 +77,44 @@ var map;
                 homes.push(new google.maps.LatLng(lat, lng));
             }
 
-            console.log("Applying the pointArray for the "+i+"th band to the map");
             var pointArray = new google.maps.MVCArray(homes);
-            console.log(pointArray);
 
             if(!pointArray || pointArray.length==0)
                 continue;
 
-            console.log("Creating the HeatmapLayer Object");
             var heatmap = new google.maps.visualization.HeatmapLayer({
                 data: pointArray
             });
 
-            console.log("Setting the colour");
-            heatmap.set('gradient', getColour(i, homeBands.length));
-            console.log("Setting the map-canvas thingy");
-            try{
-                heatmap.setMap(map);
-                console.log("Succesfully set the map-canvas thingy");
-            }catch(err){
-                console.log(err.message);
-            }
-            //if(i==4)
-              //  debugger;
+
+            var midColour = "rgba(" + (getRed(i, homeBands.length)*0.25).toString() + ", " + (getGreen(i, homeBands.length)*0.25).toString() + ", 0, 1)";
+            var finalColour = "rgba(" + getRed(i, homeBands.length) + ", " + getGreen(i, homeBands.length) + ", 0, 1)";
+
+            var gradient = ['rgba(0, 0, 0, 0)'];
+            //gradient.push(midColour);
+            gradient.push(finalColour);
+
+            heatmap.set('gradient', gradient);
+            heatmap.setMap(map);
+            
         }
     }
 
-    function getColour(index, length) {
+    function getRed(index, length) {
         if (index < length / 2) {
-            return ('rgba(255, ' + (255 * index / length) + ', 0, 1)');
+            return 255;
         }
         else {
-            return 'rgba(' + (255 * index / length) + ', 255, 1)';
+            return 255 * index / length;
+        }
+    }
+
+    function getGreen(index, length) {
+        if (index < length / 2) {
+            return 255 * index / length;
+        }
+        else {
+            return 255;
         }
     }
 
