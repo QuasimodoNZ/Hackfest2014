@@ -25,11 +25,11 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
             var homes = [];
 
             for(var j = 0; j < homeBands[i].length; j++){
-                if(!homeBands[i][0][j].hasOwnProperty('GeographicLocation'))
+                if(!homeBands[i][j].hasOwnProperty('GeographicLocation'))
                     continue;
 
-                var lng = homeBands[i][0][j].GeographicLocation.Longitude;
-                var lat = homeBands[i][0][j].GeographicLocation.Latitude;
+                var lng = homeBands[i][j].GeographicLocation.Longitude;
+                var lat = homeBands[i][j].GeographicLocation.Latitude;
 
                 homes.push(new google.maps.LatLng(lat, lng));
             }
