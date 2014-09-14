@@ -4,10 +4,10 @@
 			<meta charset="utf-8" />
 			<title></title>
 			<link rel="stylesheet" href="styles/style.css" />
-            <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-            <script src="js/lodash.js"></script>
-            <script src="/js/bower_components/angular/angular.js"></script>
-            <script src="Controllers/script.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="js/lodash.js"></script>
+        <script src="/js/bower_components/angular/angular.js"></script>
+        <script src="Controllers/script.js"></script>
 			 <style type="text/css">
       		html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
     		</style>
@@ -15,55 +15,18 @@
       			src="https://maps.googleapis.com/maps/api/js">
     		</script>
 		    <script type="text/javascript">
-        
-              function initialize() {
-                var mapOptions = {
-                  center: { lat: -34.397, lng: 150.644},
-                  zoom: 8
-                };
-                var map = new google.maps.Map(document.getElementById('map-canvas'),
-                    mapOptions);
-
-                // Where homes is an array of of arrays of google.maps.LatLng(float, float)
-                for (var i = 0; i < homes.length; i++) {
-                  var pointArray = new google.maps.MVCArray(homes[i]);
-
-                  heatmap = new google.maps.visualization.HeatmapLayer({
-                    data: pointArray
-                  });
-
-                  heatmap.set('gradient', getColour(i, homes.length));
-                  heatmap.setMap(map);
-                };
-              }
-              google.maps.event.addDomListener(window, 'load', initialize);
-
-              function getColour(index, length){
-                if(index < length/2){
-                  return ('rgba(255, ' + (255 * index / length) +', 0, 1)');
-                }
-                else{
-                  return 'rgba(' + (255 * index / length) + ', 255, 1)';
-                }
-              }
-
+          
     		</script>
 		</head>
 		<body ng-app="findaHomeApp">
-
-
-
-            <div ng-controller="mainController">
-                {{homes.length}}
-                <select
-                        ng-model="homes"
-                        ng-options="home.RateableValue for  home in homes">
-                    <option>--</option>
-                </select>
-                        <div id="map-canvas"></div>
-            </div>
-
-
-
+      <div ng-controller="mainController">
+          {{homes.length}}
+          <select
+            ng-model="homes"
+            ng-options="home.RateableValue for  home in homes">
+            <option>--</option>
+          </select>
+          <div id="map-canvas"></div>
+      </div>
 		</body>
 	</html>

@@ -6,6 +6,40 @@ var bands = 10;
 var auth = 'oauth_consumer_key=5815646823D13FA7222C0797A2749E60&oauth_token=DA88138F569C33AD938CA41753487034&oauth_signature_method=PLAINTEXT&oauth_signature=8A6E9A02BD6316ACA7CB3F2D57C28609%26F0676D085E1F584D5992FBE42D6546A3';
 findaHomeApp.controller('mainController', function ($scope, $http, $q) {
 
+    function setUpMap(){
+        console.log("Setting up map");
+        var mapOptions = {
+          center: { lat: -34.397, lng: 150.644},
+          zoom: 8
+        };
+        var map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
+    }
+    //google.maps.event.addDomListener(window, 'load', initialize);
+    setUpMap();
+    function applyHeatmap(homes) {
+        debugger;
+        // Where homes is an array of of arrays of google.maps.LatLng(float, float)
+        for (var i = 0; i < homes.length; i++) {
+          var pointArray = new google.maps.MVCArray(homes[i]);
+
+          heatmap = new google.maps.visualization.HeatmapLayer({
+            data: pointArray
+          });
+
+          heatmap.set('gradient', getColour(i, homes.length));
+          heatmap.setMap(map);
+        };
+      }
+
+      function getColour(index, length){
+        if(index < length/2){
+          return ('rgba(255, ' + (255 * index / length) +', 0, 1)');
+        }
+        else{
+          return 'rgba(' + (255 * index / length) + ', 255, 1)';
+        }
+      }
 
     $http({method: 'GET', url: 'https://api.trademe.co.nz/v1/Search/Property/Residential.json?category=3399&page=1&rows=500&region=15&return_metadata=true&' + auth}).
         success(function (data, status, headers, config) {
@@ -15,7 +49,7 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
                 console.log(houseList);
                 houseList.sort(priceSort);
                 var housesByBand = splitToBand(houseList);
-
+                applyHeatmap(housesByBand);
             });
 
         }).
