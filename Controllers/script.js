@@ -94,10 +94,10 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
         var inc = rangeRV / bands;
         console.log(inc);
         var allBandsArr = new Array();
-        for (var i = 0; i < bands; i++) {
+        for (var i = 1; i <= bands; i++) {
             var bandArr = new Array();
             bandArr.push(col.filter(function (house) {
-                return house.RateableValue < (i * inc);
+                return ( ( house.RateableValue > (i-1 * inc))&&(( house.RateableValue < (i * inc))) );
             }))
             allBandsArr.push(bandArr);
         }
