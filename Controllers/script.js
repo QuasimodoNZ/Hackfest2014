@@ -1,36 +1,195 @@
 /**
  * Created by samminns on 13/09/14.
  */
-var findaHomeApp = angular.module('findaHomeApp', []);
+var findaHomeApp = angular.module('findaHomeApp', ['google-maps']);
+
 var bands = 5;
 var map;
 var auth = 'oauth_consumer_key=5815646823D13FA7222C0797A2749E60&oauth_token=DA88138F569C33AD938CA41753487034&oauth_signature_method=PLAINTEXT&oauth_signature=8A6E9A02BD6316ACA7CB3F2D57C28609%26F0676D085E1F584D5992FBE42D6546A3';
-findaHomeApp.controller('mainController', function ($scope, $http, $q) {
+findaHomeApp.controller('mainController', function ($scope, $http, $q, $rootScope) {
+//    $scope.map = {
+//        center: {
+//            latitude: 45,
+//            longitude: -73
+//        },
+//        zoom: 8
+//    };
+$scope.housesList = [{}];
+//    // Dynamically insert the CSS style required for the markers with label.
+//    var style = document.createElement('style');
+//    style.type = 'text/css';
+//    style.innerHTML = '.labelMarker { font-size: 15px; font-weight: bold; color: #FFFFFF;font-family: "DINNextRoundedLTProMediumRegular"; border-radius: 50%; background-color: blue;width: 20px;text-align: center;vertical-align: middle;line-height: 20px; }';
+//    document.getElementsByTagName('head')[0].appendChild(style);
+//
+//
+//    $scope.map = {center: {latitude: 40.1451, longitude: -99.6680 }, zoom: 4, bounds: {}};
+//    $scope.options = {scrollwheel: false};
+//    $scope.markersEvents = {
+//        click: function (gMarker, eventName, model) {
+//            if(model.$id){
+//                model = model.coords;//use scope portion then
+//            }
+//            alert("Model: event:" + eventName + " " + JSON.stringify(model));
+//        }
+//    };
+//
+//
+//    var createRandomMarker = function (i, bounds, idKey) {
+//        var lat_min = bounds.southwest.latitude,
+//            lat_range = bounds.northeast.latitude - lat_min,
+//            lng_min = bounds.southwest.longitude,
+//            lng_range = bounds.northeast.longitude - lng_min;
+//
+//        if (idKey == null) {
+//            idKey = "id";
+//        }
+//
+//        var latitude = lat_min + (Math.random() * lat_range);
+//        var longitude = lng_min + (Math.random() * lng_range);
+//        // Note, the label* properties are only used if isLabel='true' in the directive.
+//        var ret = {
+//            options: {draggable: true,
+//                labelAnchor: '10 39',
+//                labelContent: i,
+//                labelClass: 'labelMarker'},
+//            latitude: latitude,
+//            longitude: longitude,
+//            title: 'm' + i
+//        };
+//        ret[idKey] = i;
+//        return ret;
+//    };
+//    $scope.randomMarkers = [];
+//    $scope.randomMarkersWithLabel = [];
+//    // Get the bounds from the map once it's loaded
+//    $scope.$watch(function() { return $scope.map.bounds; }, function(nv, ov) {
+//        // Only need to regenerate once
+//        // Create 25 markes with label, 25 without.
+//        if (!ov.southwest && nv.southwest) {
+//            var markers = [];
+//            for (var i = 0; i < 25; i++) {
+//                markers.push(createRandomMarker(i, $scope.map.bounds))
+//            }
+//            $scope.randomMarkers = markers;
+//            markers = [];
+//            for (var i = 25; i < 50; i++) {
+//                markers.push(createRandomMarker(i, $scope.map.bounds))
+//            }
+//            $scope.randomMarkersWithLabel = markers;
+//
+//        }
+//    }, true);
+
+
+
 
     function setUpMap() {
         console.log("Setting up map");
         var mapOptions = {
-            center: { lat: -34.397, lng: 150.644},
-            zoom: 8
+            center : {latitude : -41.2889,longitude :  174.7772},
+            zoom: 11,
+            panControl : false,
+            streetViewControl : false,
+            events: {
+                tilesloaded: function (map) {
+                    $scope.$apply(function () {
+                        map.data.loadGeoJson('wellington.geojson');
+                    });
+                }
+            },
+        bounds : { }
         };
-        map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
-    }
+//        $scope.map = new google.maps.Map(document.getElementById('map_canvas'),
+//            mapOptions);
+        $scope.map = mapOptions;
 
+    }
+    setUpMap();
+    $scope.map.bounds = { southwest :-52.618591,northwest : 165.883804,
+        southeast :-29.209970,northeast: -175.987198 };
     function addMarkers() {
-        debugger;
-//
 //        for(var i=0; i< 20; i++){
 //            if($scope.housesList[i].Geographics){
 //                var location = new google.maps.LatLng($scope.housesList.GeographicLocation.Latitude, $scope.housesList.GeographicLocation.Longitude);
 //            }
-//
-//
 //        }
-    }
 
+        $scope.markersEvents = {
+            click: function (gMarker, eventName, model) {
+                if(model.$id){
+                    model = model.coords;//use scope portion then
+                }
+                alert("Model: event:" + eventName + " " + JSON.stringify(model));
+            }
+        };
+
+
+
+    }
+    var createRandomMarker = function (i, bounds, x) {
+//        var lat_min = bounds.southwest.latitude,
+//            lat_range = bounds.northeast.latitude - lat_min,
+//            lng_min = bounds.southwest.longitude,
+//            lng_range = bounds.northeast.longitude - lng_min;
+//
+//        if (idKey == null) {
+//            idKey = "id";
+//        }
+
+        var latitude = x.GeographicLocation.Latitude;
+        var longitude = x.GeographicLocation.Longitude;
+        // Note, the label* properties are only used if isLabel='true' in the directive.
+        var ret = {
+            options: {draggable: true,
+                labelAnchor: '10 39',
+                labelContent: i,
+                labelClass: 'labelMarker'},
+            latitude: latitude,
+            longitude: longitude,
+            title: 'm' + i
+        };
+//        ret[idKey] = i;
+        return ret;
+    };
+    $scope.randomMarkers = [];
+    $scope.randomMarkersWithLabel = [];
+    // Get the bounds from the map once it's loaded
+    $scope.$watch(function() { return $scope.map.bounds; }, function(nv, ov) {
+        // Only need to regenerate once
+        // Create 25 markes with label, 25 without.
+//        debugger;
+            var markers = [];
+            for (var i = 0; i < $scope.housesList[0].length; i++) {
+console.log("Making a marker");
+                markers.push(createRandomMarker(i,$scope.map.bounds,$scope.housesList[0][i] ));
+
+            }
+            $scope.randomMarkers = markers;
+            markers = [];
+//            for (var i = 25; i < 50; i++) {
+//
+//            }
+//            $scope.randomMarkersWithLabel = markers;
+
+
+    }, true);
     //google.maps.event.addDomListener(window, 'load', initialize);
-    setUpMap();
+
+    // Load GeoJSON.
+//    var geojson = $scope.map.data.loadGeoJson('wellington.geojson');
+    // [END snippet-load]
+
+    // [START snippet-style]
+    // Set the stroke width, and fill color for each polygon
+    var featureStyle = {
+
+        fillColor: 'green',
+        strokeWeight: 1.5,
+        strokeColor: 'black',
+        fillOpacity: 0.1
+    }
+//    $scope.map.data.setStyle(featureStyle);
+    // [END snippet-style]
     function applyHeatmap(homeBands) {
         // Where homeBands is an array of of arrays of google.maps.LatLng(float, float)
         for (var i = 0; i < homeBands.length; i++) {
@@ -82,6 +241,23 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
                 var housesByBand = splitToBand(houseList);
 //                applyHeatmap(housesByBand);
                 addMarkers();
+                // Only need to regenerate once
+                // Create 25 markes with label, 25 without.
+//        debugger;
+                var markers = [];
+//                debugger;
+                for (var i = 0; i < $scope.housesList[0].length; i++) {
+
+                    markers.push(createRandomMarker(i,$scope.map.bounds,$scope.housesList[0][i] ));
+
+                }
+                $scope.randomMarkers = markers;
+                markers = [];
+                for (var i = 25; i < 50; i++) {
+
+                }
+                $scope.randomMarkersWithLabel = markers;
+
             });
 
         }).
@@ -104,7 +280,7 @@ findaHomeApp.controller('mainController', function ($scope, $http, $q) {
         var splitList = new Array();
         arr.forEach(function (coll) {
             coll.data.List.forEach(function (house) {
-                if (house.RateableValue && parseInt(house.RateableValue, 10) > 100000) {
+                if (house.RateableValue && parseInt(house.RateableValue, 10) > 100000 && house.GeographicLocation != undefined) {
                     splitList.push(house);
                 }
             })
